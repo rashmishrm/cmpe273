@@ -12,10 +12,12 @@ def print_connections():
         #Defining socket_conn as namedTuple
         socket_conn = namedtuple('sconn', ['fd', 'family', 'type', 'laddr', 'raddr',
                              'status', 'pid'])
-        #Sorting connections on the basis of PID,Status
+        #Sorting connections on the basis of PID
         sorted_connections = sorted(connection_array, key=attrgetter('pid'))
+
         grouped_map = {}
         pid_count_map={}
+        #grouping connections on pid and counting number of connections per pid
         for key, group in groupby(sorted_connections, key=attrgetter('pid')):
             grouped_map[key] = [e for e in group]
             pid_count_map[key]=len(grouped_map[key])
@@ -25,6 +27,7 @@ def print_connections():
 
         print '"pid","laddr","raddr","status"'
 
+        #Print connections per sorted pid based on count
         for pid in sorted_by_count:
             connections_per_pid = grouped_map[pid]
             for x in connections_per_pid:
